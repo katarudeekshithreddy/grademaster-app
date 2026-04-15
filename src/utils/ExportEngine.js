@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx';
 /**
  * EXPORT INDIVIDUAL RESULTS
  */
-export function exportToExcel(dataset, template) {
+export function exportToExcel(dataset, template, teamMarks = null) {
   const excelData = dataset.map(row => {
     const displayName = row.studentName || (row.identifier.includes(' - ') ? row.identifier.split(' - ')[1] : row.identifier);
     const rollStr = row.rollNumber || (row.identifier.includes(' - ') ? row.identifier.split(' - ')[0] : 'N/A');
@@ -16,7 +16,12 @@ export function exportToExcel(dataset, template) {
     };
 
     template.forEach(tCol => {
-      formattedRow[tCol.name] = row.grades[tCol.name] || 0;
+      if (tCol.type === 'team' && teamMarks && row.teamId && teamMarks[row.teamId]) {
+        // Look up team marks from the shared teamMarks map using the student's teamId
+        formattedRow[tCol.name] = teamMarks[row.teamId][tCol.name] ?? 0;
+      } else {
+        formattedRow[tCol.name] = row.grades[tCol.name] ?? 0;
+      }
     });
 
     formattedRow['Total Weighted Score'] = row.finalScore;

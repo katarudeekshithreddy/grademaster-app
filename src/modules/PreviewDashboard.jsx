@@ -340,7 +340,7 @@ export function PreviewDashboard({ template, dataset, onReset, gradingMode, team
               <button onClick={() => setSortConfig({ key: '_id', direction: 'asc' })} style={{ background: sortConfig.key === '_id' ? 'var(--accent-primary)' : 'transparent', color: sortConfig.key === '_id' ? '#fff' : 'var(--text-muted)', border: 'none', padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 600, fontSize: '0.875rem' }}>Original Order</button>
            </div>
            <Button variant="secondary" onClick={onReset}>Back to Start</Button>
-           <Button variant="secondary" onClick={() => exportToExcel(finalDataset, template)} icon={Download}>Download Individual Results</Button>
+           <Button variant="secondary" onClick={() => exportToExcel(finalDataset, template, teamMarks)} icon={Download}>Download Individual Results</Button>
         </div>
       </div>
 
