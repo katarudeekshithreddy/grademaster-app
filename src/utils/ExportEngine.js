@@ -16,10 +16,18 @@ export function exportToExcel(dataset, template, teamMarks = null, scoreMode = '
     };
 
     template.forEach(tCol => {
+      let mark = 0;
       if (tCol.type === 'team' && teamMarks && row.teamId && teamMarks[row.teamId]) {
-        formattedRow[tCol.name] = teamMarks[row.teamId][tCol.name] ?? 0;
+        mark = teamMarks[row.teamId][tCol.name] ?? 0;
       } else {
-        formattedRow[tCol.name] = row.grades[tCol.name] ?? 0;
+        mark = row.grades[tCol.name] ?? 0;
+      }
+
+      if (scoreMode === 'weighted') {
+        const weightedVal = (mark / tCol.maxMarks) * tCol.weight;
+        formattedRow[tCol.name] = `${Number(weightedVal.toFixed(2))} / ${tCol.weight}`;
+      } else {
+        formattedRow[tCol.name] = mark;
       }
     });
 

@@ -470,7 +470,14 @@ export function PreviewDashboard({ template, dataset, onReset, gradingMode, team
                 <th style={{ cursor: 'pointer' }} onClick={() => requestSort('identifier')}>Identifier {sortConfig.key === 'identifier' && (sortConfig.direction === 'asc' ? '↑' : '↓')}</th>
                 {gradingMode === 'integrated' && (<th style={{ cursor: 'pointer' }} onClick={() => requestSort('teamId')}>Team ID {sortConfig.key === 'teamId' && (sortConfig.direction === 'asc' ? '↑' : '↓')}</th>)}
                 {template.map(tCol => (
-                  <th key={tCol.name}><div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}><span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{tCol.type === 'team' ? 'Team' : 'Indiv'}</span>{tCol.name}</div></th>
+                  <th key={tCol.name}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        {scoreMode === 'weighted' ? `W: ${tCol.weight}%` : (tCol.type === 'team' ? 'Team' : 'Indiv')}
+                      </span>
+                      {tCol.name}
+                    </div>
+                  </th>
                 ))}
                 <th style={{ cursor: 'pointer' }} onClick={() => requestSort(scoreMode === 'weighted' ? 'finalScore' : 'totalRawScore')}>
                   {scoreMode === 'weighted' ? 'Final Score (%)' : 'Total (Raw)'} 
@@ -501,10 +508,17 @@ export function PreviewDashboard({ template, dataset, onReset, gradingMode, team
                     } else {
                       mark = row.grades[tCol.name] || 0;
                     }
+                    
+                    const weightedVal = Number(((mark / tCol.maxMarks) * tCol.weight).toFixed(2));
+
                     return (
                       <td key={tCol.name} style={{ textAlign: 'center' }}>
-                         <span style={{ color: mark === 0 ? 'rgba(255,255,255,0.05)' : 'var(--text-primary)', fontWeight: 500 }}>{mark}</span>
-                         <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginLeft: '0.15rem' }}>/ {tCol.maxMarks}</span>
+                         <span style={{ color: mark === 0 ? 'rgba(255,255,255,0.05)' : 'var(--text-primary)', fontWeight: 500 }}>
+                           {scoreMode === 'weighted' ? weightedVal : mark}
+                         </span>
+                         <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginLeft: '0.15rem' }}>
+                           / {scoreMode === 'weighted' ? tCol.weight : tCol.maxMarks}
+                         </span>
                       </td>
                     );
                   })}
