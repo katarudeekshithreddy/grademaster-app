@@ -1,6 +1,7 @@
 export function calculateFinalScores(dataset, template, gradingMode = 'standard', teamMapping = null, teamMarks = null) {
   return dataset.map(student => {
     let finalScore = 0;
+    let totalRawScore = 0;
     const studentId = student.rollNumber || student.studentName;
     const teamId = (gradingMode === 'integrated' && teamMapping) ? teamMapping[studentId] : null;
 
@@ -8,21 +9,25 @@ export function calculateFinalScores(dataset, template, gradingMode = 'standard'
       let marks = 0;
       
       if (gradingMode === 'integrated' && tCol.type === 'team') {
-        // Fetch from teamMarks if it's a team component
         if (teamId && teamMarks && teamMarks[teamId]) {
           marks = teamMarks[teamId][tCol.name] || 0;
         }
       } else {
-        // Individual component
         marks = student.grades[tCol.name] || 0;
       }
 
+      totalRawScore += marks;
       const pointValue = (marks / tCol.maxMarks) * (tCol.weight / 100);
       finalScore += pointValue;
     });
 
-    finalScore = finalScore * 100; // Total 100 base score
-    return { ...student, teamId, finalScore: Number(finalScore.toFixed(2)) };
+    finalScore = finalScore * 100;
+    return { 
+      ...student, 
+      teamId, 
+      finalScore: Number(finalScore.toFixed(2)),
+      totalRawScore: Number(totalRawScore.toFixed(2))
+    };
   });
 }
 

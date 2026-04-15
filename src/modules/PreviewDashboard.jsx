@@ -38,6 +38,7 @@ export function PreviewDashboard({ template, dataset, onReset, gradingMode, team
   const [hasHandledOutliers, setHasHandledOutliers] = useState(false);
   const [rawScoredData, setRawScoredData] = useState([]);
   const [rawStats, setRawStats] = useState(null);
+  const [scoreMode, setScoreMode] = useState('weighted'); // 'weighted' or 'raw'
 
   useEffect(() => {
     if (!hasHandledOutliers) {
@@ -336,11 +337,16 @@ export function PreviewDashboard({ template, dataset, onReset, gradingMode, team
         <h2 style={{ margin: 0, color: 'var(--accent-primary)' }}>Final Analytics Dashboard</h2>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
            <div style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', padding: '0.25rem', borderRadius: '8px', marginRight: '0.5rem' }}>
+              <button onClick={() => setScoreMode('weighted')} style={{ background: scoreMode === 'weighted' ? 'var(--accent-primary)' : 'transparent', color: scoreMode === 'weighted' ? '#fff' : 'var(--text-muted)', border: 'none', padding: '0.5rem 0.75rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 600, fontSize: '0.75rem' }}>Weighted (%)</button>
+              <button onClick={() => setScoreMode('raw')} style={{ background: scoreMode === 'raw' ? 'var(--accent-primary)' : 'transparent', color: scoreMode === 'raw' ? '#fff' : 'var(--text-muted)', border: 'none', padding: '0.5rem 0.75rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 600, fontSize: '0.75rem' }}>Raw Total</button>
+           </div>
+           
+           <div style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', padding: '0.25rem', borderRadius: '8px', marginRight: '0.5rem' }}>
               <button onClick={() => setSortConfig({ key: 'rank', direction: 'asc' })} style={{ background: sortConfig.key !== '_id' ? 'var(--accent-primary)' : 'transparent', color: sortConfig.key !== '_id' ? '#fff' : 'var(--text-muted)', border: 'none', padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 600, fontSize: '0.875rem' }}>Ranking Order</button>
               <button onClick={() => setSortConfig({ key: '_id', direction: 'asc' })} style={{ background: sortConfig.key === '_id' ? 'var(--accent-primary)' : 'transparent', color: sortConfig.key === '_id' ? '#fff' : 'var(--text-muted)', border: 'none', padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 600, fontSize: '0.875rem' }}>Original Order</button>
            </div>
            <Button variant="secondary" onClick={onReset}>Back to Start</Button>
-           <Button variant="secondary" onClick={() => exportToExcel(finalDataset, template, teamMarks)} icon={Download}>Download Individual Results</Button>
+           <Button variant="secondary" onClick={() => exportToExcel(finalDataset, template, teamMarks, scoreMode)} icon={Download}>Download Individual Results</Button>
         </div>
       </div>
 
@@ -466,7 +472,10 @@ export function PreviewDashboard({ template, dataset, onReset, gradingMode, team
                 {template.map(tCol => (
                   <th key={tCol.name}><div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}><span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{tCol.type === 'team' ? 'Team' : 'Indiv'}</span>{tCol.name}</div></th>
                 ))}
-                <th style={{ cursor: 'pointer' }} onClick={() => requestSort('finalScore')}>Final Score {sortConfig.key === 'finalScore' && (sortConfig.direction === 'asc' ? '↑' : '↓')}</th>
+                <th style={{ cursor: 'pointer' }} onClick={() => requestSort(scoreMode === 'weighted' ? 'finalScore' : 'totalRawScore')}>
+                  {scoreMode === 'weighted' ? 'Final Score (%)' : 'Total (Raw)'} 
+                  {((scoreMode === 'weighted' && sortConfig.key === 'finalScore') || (scoreMode === 'raw' && sortConfig.key === 'totalRawScore')) && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                </th>
                 <th style={{ cursor: 'pointer' }} onClick={() => requestSort('zScore')}>Z-Score {sortConfig.key === 'zScore' && (sortConfig.direction === 'asc' ? '↑' : '↓')}</th>
                 <th style={{ cursor: 'pointer', textAlign: 'center' }} onClick={() => requestSort('grade')}>Grade {sortConfig.key === 'grade' && (sortConfig.direction === 'asc' ? '↑' : '↓')}</th>
               </tr>
@@ -481,12 +490,30 @@ export function PreviewDashboard({ template, dataset, onReset, gradingMode, team
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                        <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: `linear-gradient(135deg, ${getAvatarColor(displayName)}, #1e293b)`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 600, fontSize: '1rem', boxShadow: '0 4px 10px rgba(0,0,0,0.3)', border: '2px solid rgba(255,255,255,0.1)' }}>{displayName.charAt(0).toUpperCase()}</div>
-                       <div style={{ display: 'flex', flexDirection: 'column' }}><span style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.95rem' }}>{displayName}</span><span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.05em' }}>ID: {rollStr}</span></div>
+                       <div style={{ display: 'flex', flexDirection: 'column' }}><span style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.95rem' }}>{displayName}</span><div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem' }}>{rollStr}</div></div>
                     </div>
                   </td>
                   {gradingMode === 'integrated' && (<td style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>{row.teamId || '-'}</td>)}
-                  {template.map(tCol => (<td key={tCol.name} style={{ color: tCol.type === 'team' ? 'var(--status-info)' : 'var(--text-secondary)' }}>{tCol.type === 'team' ? (row.teamId ? (teamMarks[row.teamId]?.[tCol.name] ?? row.grades[tCol.name]) : '-') : row.grades[tCol.name]}</td>))}
-                  <td style={{ color: 'var(--accent-primary)', fontWeight: 700, fontSize: '1.1rem' }}>{row.finalScore}</td>
+                  {template.map(tCol => {
+                    let mark = 0;
+                    if (tCol.type === 'team' && teamMarks && row.teamId && teamMarks[row.teamId]) {
+                      mark = teamMarks[row.teamId][tCol.name] || 0;
+                    } else {
+                      mark = row.grades[tCol.name] || 0;
+                    }
+                    return (
+                      <td key={tCol.name} style={{ textAlign: 'center' }}>
+                         <span style={{ color: mark === 0 ? 'rgba(255,255,255,0.05)' : 'var(--text-primary)', fontWeight: 500 }}>{mark}</span>
+                         <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginLeft: '0.15rem' }}>/ {tCol.maxMarks}</span>
+                      </td>
+                    );
+                  })}
+                  <td>
+                    <div style={{ background: 'rgba(6,182,212,0.1)', padding: '0.4rem 0.8rem', borderRadius: '6px', border: '1px solid rgba(6,182,212,0.2)', display: 'inline-block' }}>
+                       <span style={{ color: 'var(--accent-primary)', fontWeight: 800, fontSize: '1rem' }}>{scoreMode === 'weighted' ? row.finalScore : row.totalRawScore}</span>
+                       <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem', marginLeft: '0.2rem' }}>{scoreMode === 'weighted' ? '%' : 'pts'}</span>
+                    </div>
+                  </td>
                   <td style={{ color: 'var(--text-secondary)', fontFamily: 'monospace' }}>{row.zScore}</td>
                   <td style={{ textAlign: 'center' }}>
                      <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '12px', fontWeight: '700', fontSize: '1.1rem', boxShadow: '0 4px 12px rgba(0,0,0,0.2)', background: row.grade.startsWith('A') || row.grade.startsWith('B') ? 'var(--success-bg)' : row.grade.startsWith('C') ? 'var(--bg-tertiary)' : row.grade.startsWith('D') ? 'var(--warning-bg)' : 'var(--error-bg)', color: row.grade.startsWith('A') || row.grade.startsWith('B') ? 'var(--status-success)' : row.grade.startsWith('C') ? 'var(--text-primary)' : row.grade.startsWith('D') ? 'var(--status-warning)' : 'var(--status-error)', border: `1px solid ${row.grade.startsWith('A') || row.grade.startsWith('B') ? 'var(--status-success)' : row.grade.startsWith('C') ? 'var(--text-secondary)' : row.grade.startsWith('D') ? 'var(--status-warning)' : 'var(--status-error)'}33` }}>{row.grade}</span>

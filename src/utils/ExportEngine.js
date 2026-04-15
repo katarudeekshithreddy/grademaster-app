@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx';
 /**
  * EXPORT INDIVIDUAL RESULTS
  */
-export function exportToExcel(dataset, template, teamMarks = null) {
+export function exportToExcel(dataset, template, teamMarks = null, scoreMode = 'weighted') {
   const excelData = dataset.map(row => {
     const displayName = row.studentName || (row.identifier.includes(' - ') ? row.identifier.split(' - ')[1] : row.identifier);
     const rollStr = row.rollNumber || (row.identifier.includes(' - ') ? row.identifier.split(' - ')[0] : 'N/A');
@@ -17,22 +17,27 @@ export function exportToExcel(dataset, template, teamMarks = null) {
 
     template.forEach(tCol => {
       if (tCol.type === 'team' && teamMarks && row.teamId && teamMarks[row.teamId]) {
-        // Look up team marks from the shared teamMarks map using the student's teamId
         formattedRow[tCol.name] = teamMarks[row.teamId][tCol.name] ?? 0;
       } else {
         formattedRow[tCol.name] = row.grades[tCol.name] ?? 0;
       }
     });
 
-    formattedRow['Total Weighted Score'] = row.finalScore;
-    formattedRow['Percentage'] = row.finalScore;
+    if (scoreMode === 'weighted') {
+      formattedRow['Total Weighted Score'] = row.finalScore;
+      formattedRow['Percentage'] = row.finalScore;
+    } else {
+      formattedRow['Total Raw Score'] = row.totalRawScore;
+    }
+    
     formattedRow['Z-Score'] = row.zScore;
     formattedRow['Final Grade'] = row.grade;
 
     return formattedRow;
   });
 
-  generateDownload(excelData, "Final_Individual_Grades");
+  const filename = scoreMode === 'weighted' ? "Final_Individual_Grades_Weighted" : "Final_Individual_Grades_Raw";
+  generateDownload(excelData, filename);
 }
 
 /**
