@@ -73,8 +73,11 @@ export function Sidebar({ currentStep, setCurrentStep, hasData }) {
         <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', letterSpacing: '0.1em', textAlign: 'center', marginBottom: '0.5rem' }}>
           V3.0.4 EXECUTIVE EDITION
         </div>
-        <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', letterSpacing: '0.05em', textAlign: 'center' }}>
-          Designed & Created by <span style={{ color: 'var(--accent-primary)', fontWeight: 800 }}>Team Debuggers</span>
+        <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', letterSpacing: '0.05em', textAlign: 'center', opacity: 0.8 }}>
+          A Premium Production by <span style={{ color: 'var(--accent-primary)', fontWeight: 800 }}>Hearted_Creations</span>
+        </div>
+        <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', letterSpacing: '0.05em', textAlign: 'center', marginTop: '4px' }}>
+          Developed by <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Team_Debuggers</span> © 2026
         </div>
       </div>
     </aside>

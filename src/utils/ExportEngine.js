@@ -1,3 +1,9 @@
+/**
+ * GradeMaster High-Precision Statistical Grading System
+ * Created by Team_Debuggers for Hearted_Creations
+ * © 2026. All rights reserved.
+ * Licensed under the MIT License.
+ */
 import * as XLSX from 'xlsx';
 
 /**

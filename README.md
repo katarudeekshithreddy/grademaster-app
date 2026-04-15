@@ -60,7 +60,8 @@ Download the standalone executable for your OS from the [Releases](https://githu
    ```
 
 ## 📄 License
-This project is developed as a premium academic tool. Please review individual component licenses for third-party libraries (React, Electron, etc.).
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-*Developed with ❤️ by Kataru Deekshith Reddy*
+*A Premium Production by **Hearted_Creations** | Developed by **Team_Debuggers** © 2026*

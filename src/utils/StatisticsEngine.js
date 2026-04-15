@@ -1,3 +1,10 @@
+/**
+ * GradeMaster High-Precision Statistical Grading System
+ * Created by Team_Debuggers for Hearted_Creations
+ * © 2026. All rights reserved.
+ * Licensed under the MIT License.
+ */
+
 export function calculateFinalScores(dataset, template, gradingMode = 'standard', teamMapping = null, teamMarks = null) {
   return dataset.map(student => {
     let finalScore = 0;

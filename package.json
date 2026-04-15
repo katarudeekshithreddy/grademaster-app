@@ -2,6 +2,7 @@
   "name": "grademaster",
   "private": true,
   "version": "3.0.4",
+  "author": "Hearted_Creations",
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {
