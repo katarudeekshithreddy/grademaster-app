@@ -1,16 +1,66 @@
-# React + Vite
+# GradeMaster 🎓
+### High-Precision Statistical Grading & Analytics System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+GradeMaster is an executive-grade desktop application built to streamline the complex process of statistical grading in academic environments. Designed with a **premium Obsidian Glass aesthetic**, it combines robust data engineering with real-time interactive analytics.
 
-Currently, two official plugins are available:
+![GradeMaster Preview](public/icon.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Key Features
 
-## React Compiler
+- **Obsidian Glass UI**: A state-of-the-art interactive dashboard with glassmorphism effects and dynamic animations.
+- **Smart Data Ingestion**: Seamlessly import course templates, student marks, and team mapping direct from Excel.
+- **Integrated Team Analytics**: Automatically maps team-based projects and presentations to individual students using a dedicated mapping engine.
+- **Outlier Management Engine**: Choose between three sophisticated statistical strategies:
+  - **Ignore**: Keep data raw.
+  - **Remove**: Filter out anomalies to recalculate pure statistics.
+  - **Cap (Mean ± 2σ)**: Limit extreme values while retaining all student data (Best Practical Choice).
+- **Interactive Cutoff System**: Drag-and-drop grade boundaries (A, B, C, D) directly on a high-precision histogram to see real-time shifts in grade distribution.
+- **Dual-Mode Scoring**: Toggle between **Weighted Percentages (%)** and **Original Raw Points** in both the UI and Excel exports.
+- **Cross-Platform Standalone**: Single-file executables for Windows, macOS, and Linux.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Technical Stack
 
-## Expanding the ESLint configuration
+| Layer | Technology |
+|---|---|
+| **Frontend** | React 19 + Vite 8 |
+| **Desktop Shell** | Electron 41 |
+| **Styling** | Vanilla CSS (CSS Variables + Glassmorphism) |
+| **Charts** | Recharts (High-Precision Mapping) |
+| **Data Engine** | SheetJS (Excel Pipeline) |
+| **Automation** | GitHub Actions (CI/CD Cross-Platform) |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🧠 Data Structures & Logic
+
+- **Custom MaxHeap**: Used for efficient $O(n \log n)$ ranking of students and teams.
+- **HashMap Lookups**: $O(1)$ mapping of Student IDs to Team Marks and Team Identifiers.
+- **Z-Score Normalization**: Statistical calculation of relative performance using $\mu$ (mean) and $\sigma$ (standard deviation).
+- **Validation Pipeline**: A multi-stage processing engine that catches duplicate assignments, missing fields, and type mismatches before they hit the analytics engine.
+
+## 📦 How to Run
+
+### For Faculty (Standard Users)
+Download the standalone executable for your OS from the [Releases](https://github.com/katarudeekshithreddy/grademaster-app/releases) page. No installation required.
+
+### For Developers
+1. **Clone the repo**:
+   ```bash
+   git clone https://github.com/katarudeekshithreddy/grademaster-app.git
+   ```
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+3. **Run in development mode**:
+   ```bash
+   npm run electron:dev
+   ```
+4. **Build production binaries**:
+   ```bash
+   npm run electron:build
+   ```
+
+## 📄 License
+This project is developed as a premium academic tool. Please review individual component licenses for third-party libraries (React, Electron, etc.).
+
+---
+*Developed with ❤️ by Kataru Deekshith Reddy*
