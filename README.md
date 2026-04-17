@@ -64,4 +64,4 @@ Download the standalone executable for your OS from the [Releases](https://githu
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-*A Premium Production by **Hearted_Creations** | Developed by **Team_Debuggers** © 2026*
+*Developed by **Team_Debuggers** © 2026*
