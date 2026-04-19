@@ -331,25 +331,23 @@ export function PreviewDashboard({ template, dataset, onReset, gradingMode, team
              ))}
            </div>
         </Card>
-             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-light)', marginBottom: '1rem' }}>
-         <h2 style={{ margin: 0, color: '#fff', fontSize: '1.4rem' }}>Final Analytics Dashboard</h2>
-         
-         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-            {/* SCORE MODE TOGGLE EXPLICTLY VISIBLE */}
-            <div style={{ display: 'flex', background: 'var(--bg-secondary)', padding: '0.4rem', borderRadius: '8px', border: '1px solid var(--border-light)' }}>
-               <button onClick={() => setScoreMode('weighted')} style={{ background: scoreMode === 'weighted' ? 'var(--accent-primary)' : 'transparent', color: scoreMode === 'weighted' ? '#fff' : 'var(--text-muted)', border: 'none', padding: '0.6rem 1rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '0.85rem', transition: 'all 0.2s' }}>Weighted Scores (%)</button>
-               <button onClick={() => setScoreMode('raw')} style={{ background: scoreMode === 'raw' ? 'var(--accent-primary)' : 'transparent', color: scoreMode === 'raw' ? '#fff' : 'var(--text-muted)', border: 'none', padding: '0.6rem 1rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '0.85rem', transition: 'all 0.2s' }}>Raw Total Points</button>
-            </div>
-            
-            <div style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', padding: '0.25rem', borderRadius: '8px' }}>
-               <button onClick={() => setSortConfig({ key: 'rank', direction: 'asc' })} style={{ background: sortConfig.key !== '_id' ? 'var(--accent-primary)' : 'transparent', color: sortConfig.key !== '_id' ? '#fff' : 'var(--text-muted)', border: 'none', padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 600, fontSize: '0.875rem' }}>Ranking Order</button>
-               <button onClick={() => setSortConfig({ key: '_id', direction: 'asc' })} style={{ background: sortConfig.key === '_id' ? 'var(--accent-primary)' : 'transparent', color: sortConfig.key === '_id' ? '#fff' : 'var(--text-muted)', border: 'none', padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 600, fontSize: '0.875rem' }}>Original Order</button>
-            </div>
+      )}
 
-            <Button variant="secondary" onClick={onReset}>Back to Start</Button>
-            <Button variant="secondary" onClick={() => exportToExcel(finalDataset, template, teamMarks, scoreMode)} icon={Download}>Download Individual Results</Button>
-         </div>
-       </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-light)', marginBottom: '1rem' }}>
+        <h2 style={{ margin: 0, color: '#fff', fontSize: '1.4rem' }}>Final Analytics Dashboard</h2>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', background: 'var(--bg-secondary)', padding: '0.4rem', borderRadius: '8px', border: '1px solid var(--border-light)' }}>
+            <button onClick={() => setScoreMode('weighted')} style={{ background: scoreMode === 'weighted' ? 'var(--accent-primary)' : 'transparent', color: scoreMode === 'weighted' ? '#fff' : 'var(--text-muted)', border: 'none', padding: '0.6rem 1rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '0.85rem', transition: 'all 0.2s' }}>Weighted Scores (%)</button>
+            <button onClick={() => setScoreMode('raw')} style={{ background: scoreMode === 'raw' ? 'var(--accent-primary)' : 'transparent', color: scoreMode === 'raw' ? '#fff' : 'var(--text-muted)', border: 'none', padding: '0.6rem 1rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '0.85rem', transition: 'all 0.2s' }}>Raw Total Points</button>
+          </div>
+          <div style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', padding: '0.25rem', borderRadius: '8px' }}>
+            <button onClick={() => setSortConfig({ key: 'rank', direction: 'asc' })} style={{ background: sortConfig.key !== '_id' ? 'var(--accent-primary)' : 'transparent', color: sortConfig.key !== '_id' ? '#fff' : 'var(--text-muted)', border: 'none', padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 600, fontSize: '0.875rem' }}>Ranking Order</button>
+            <button onClick={() => setSortConfig({ key: '_id', direction: 'asc' })} style={{ background: sortConfig.key === '_id' ? 'var(--accent-primary)' : 'transparent', color: sortConfig.key === '_id' ? '#fff' : 'var(--text-muted)', border: 'none', padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 600, fontSize: '0.875rem' }}>Original Order</button>
+          </div>
+          <Button variant="secondary" onClick={onReset}>Back to Start</Button>
+          <Button variant="secondary" onClick={() => exportToExcel(finalDataset, template, teamMarks, scoreMode)} icon={Download}>Download Individual Results</Button>
+        </div>
+      </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
         <Card className="glass-panel premium-card" style={{ padding: '2rem', minHeight: '550px' }}>
