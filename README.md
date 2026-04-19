@@ -1,4 +1,4 @@
-# GradeMaster 🎓
+# GradeMaster v3.0.5 🎓
 ### High-Precision Statistical Grading & Analytics System
 
 GradeMaster is an executive-grade desktop application built to streamline the complex process of statistical grading in academic environments. Designed with a **premium Obsidian Glass aesthetic**, it combines robust data engineering with real-time interactive analytics.
