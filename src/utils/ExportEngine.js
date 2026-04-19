@@ -31,7 +31,7 @@ export function exportToExcel(dataset, template, teamMarks = null, scoreMode = '
 
       if (scoreMode === 'weighted') {
         const weightedVal = (mark / tCol.maxMarks) * tCol.weight;
-        formattedRow[tCol.name] = `${Number(weightedVal.toFixed(2))} / ${tCol.weight}`;
+        formattedRow[tCol.name] = Number(((mark / tCol.maxMarks) * tCol.weight).toFixed(2));
       } else {
         formattedRow[tCol.name] = mark;
       }
