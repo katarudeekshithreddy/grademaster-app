@@ -71,7 +71,7 @@ export function Sidebar({ currentStep, setCurrentStep, hasData }) {
 
       <div className="sidebar-footer">
         <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', letterSpacing: '0.1em', textAlign: 'center', marginBottom: '0.5rem' }}>
-          V3.0.4 EXECUTIVE EDITION
+          V3.0.5 EXECUTIVE EDITION
         </div>
         <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', letterSpacing: '0.05em', textAlign: 'center' }}>
           Developed by <span style={{ color: 'var(--accent-primary)', fontWeight: 800 }}>Team_Debuggers</span> © 2026
